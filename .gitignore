@@ -1,0 +1,11 @@
+
+/Library
+/Temp
+/Build
+/.vs
+*.csproj
+*.sln
+*.userprefs
+*.apk
+AssetBundles/
+obj/
