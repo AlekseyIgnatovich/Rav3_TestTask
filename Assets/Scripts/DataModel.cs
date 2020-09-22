@@ -21,6 +21,7 @@ public class DataModel : ScriptableObject
         public RucksackSlotModel(RucksackItemType itemType, int itemId/*, bool equipped*/)
         {
             ItemType = itemType;
+            ItemId = new NotifableInt();
             ItemId.Value = itemId;
         }
     }

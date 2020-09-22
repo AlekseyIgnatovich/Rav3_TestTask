@@ -432,10 +432,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a577116e757c0c4c849f555b7e6e951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applicationSettings: {fileID: 0}
-  rucksack: {fileID: 0}
+  applicationSettings: {fileID: 11400000, guid: b732d56e5952d7845a3740a3a23aa52e,
+    type: 2}
+  rucksack: {fileID: 7388264977812260777}
   networkManager: {fileID: 1499310235}
-  dataModel: {fileID: 0}
+  dataModel: {fileID: 11400000, guid: b1a8263f074a2a4498a894a7df3f18bd, type: 2}
 --- !u!4 &1499310237
 Transform:
   m_ObjectHideFlags: 0
@@ -524,3 +525,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28062636938146e46b960ebe59550ae7, type: 3}
+--- !u!114 &7388264977812260777 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8774894851857823978, guid: 28062636938146e46b960ebe59550ae7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7388264977812260776}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b36d828c1553521438c6a72239a96a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
