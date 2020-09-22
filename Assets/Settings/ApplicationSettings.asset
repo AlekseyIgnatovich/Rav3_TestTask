@@ -12,4 +12,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8296c2d6e9d306d4d967c07fe0f8881f, type: 3}
   m_Name: ApplicationSettings
   m_EditorClassIdentifier: 
-  inventoryItems: []
+  rucksackItems:
+  - settingsId: Sphere_1
+    itemType: 0
+    name: Sphere_1
+    weight: 1
+    prefab: {fileID: 2010197053130342672, guid: 1432bf63ff8601042857f727d4996d16,
+      type: 3}
+    icon: {fileID: 2800000, guid: 05ae5b27f62190b4da657741df56fafd, type: 3}
+  - settingsId: Sphere_2
+    itemType: 0
+    name: Sphere_2
+    weight: 2
+    prefab: {fileID: 4874970385542839119, guid: 760aaa2f6dd87d44dbec89d4d63c5dac,
+      type: 3}
+    icon: {fileID: 2800000, guid: cb93653465f6bc64f938a8231850ae83, type: 3}
+  - settingsId: Sphere_3
+    itemType: 0
+    name: Sphere_3
+    weight: 3
+    prefab: {fileID: 6470064494943446939, guid: 2e50da75db26256419c594ad71450c25,
+      type: 3}
+    icon: {fileID: 2800000, guid: 33ba85d5fc7cbab4a9dcd8dc35e31542, type: 3}
+  - settingsId: Cube_1
+    itemType: 0
+    name: Cube_1
+    weight: 0
+    prefab: {fileID: 5414240455369524319, guid: c72a46d174c61e74d97837308e1d616d,
+      type: 3}
+    icon: {fileID: 2800000, guid: 33cddcd61e69144449b696d94a079e64, type: 3}
+  - settingsId: Cube_2
+    itemType: 0
+    name: Cube_2
+    weight: 2
+    prefab: {fileID: 8454367393842246729, guid: 3b19dd8ee418b524aba3337e64e15b5d,
+      type: 3}
+    icon: {fileID: 2800000, guid: 8925c87a7beb94c4bb8da70f92affebc, type: 3}
+  - settingsId: Cube_3
+    itemType: 0
+    name: Cube_3
+    weight: 3
+    prefab: {fileID: 1904814063732657655, guid: 554a672eb213bf644a3a82fecf2a284f,
+      type: 3}
+    icon: {fileID: 2800000, guid: ea9306e1aa95eb8439400efefff9f8db, type: 3}
+  - settingsId: Cylinder_1
+    itemType: 0
+    name: Cylinder_1
+    weight: 1
+    prefab: {fileID: 3179569331570652753, guid: 9de6b0249fadc35469dc7bad9d4c354b,
+      type: 3}
+    icon: {fileID: 2800000, guid: d0ea2ec653dd331458a02626c7a02955, type: 3}
+  - settingsId: Cylinder_2
+    itemType: 0
+    name: Cylinder_2
+    weight: 2
+    prefab: {fileID: 2735296295437498609, guid: e3ba94ac8034e6a41b4b12f03f0fb5a6,
+      type: 3}
+    icon: {fileID: 2800000, guid: a938c2dc75e47c7469ce644250a6c8fa, type: 3}
+  - settingsId: Cylinder_3
+    itemType: 0
+    name: Cylinder_3
+    weight: 3
+    prefab: {fileID: 7159487345362611740, guid: 81067a6851bf503498894162422227cb,
+      type: 3}
+    icon: {fileID: 2800000, guid: c6c531e9c23db0e40b2eba0a8f947629, type: 3}
