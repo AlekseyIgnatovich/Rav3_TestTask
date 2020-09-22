@@ -523,6 +523,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rucksack
       objectReference: {fileID: 0}
+    - target: {fileID: 6473249491450279026, guid: 28062636938146e46b960ebe59550ae7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28062636938146e46b960ebe59550ae7, type: 3}
 --- !u!114 &7388264977812260777 stripped

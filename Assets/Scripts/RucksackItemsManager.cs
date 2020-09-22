@@ -20,6 +20,8 @@ public class RucksackItemsManager
 
     const int ItemsCountPerType = 3;
 
+    public RucksackItemObject DraggedItem { get; private set; }
+
     ApplicationSettings applicationSettings = null;
     DataModel dataModel = null;
     GameObject rucksackItemsParent = null;
@@ -47,16 +49,19 @@ public class RucksackItemsManager
             {
                 string settingsId = applicationSettings.GetRandomRucksackItem(itemTypes[i]);
 
-                float x = UnityEngine.Random.Range(-5, 5);
-                float y = 1;
-                float z = UnityEngine.Random.Range(-5, 5);
-                Vector3 position = new Vector3(x, y, z);
-
-                itemsData[i * ItemsCountPerType + j] = new ItemsCreationData(instanceId++, settingsId, position);
+                itemsData[i * ItemsCountPerType + j] = new ItemsCreationData(instanceId++, settingsId, GetRandomPos());
             }
         }
     }
-    
+
+    Vector3 GetRandomPos()
+    {
+        float x = UnityEngine.Random.Range(-5, 5);
+        float y = 1;
+        float z = UnityEngine.Random.Range(-5, 5);
+        return  new Vector3(x, y, z);
+    }
+
     public void CreateItems()
     {
         foreach (var d in itemsData)
@@ -73,6 +78,40 @@ public class RucksackItemsManager
 
             rucksackItem.Init(d.InstanceId, d.SettingsId);
             rucksackItems.Add(d.InstanceId, rucksackItem);
+
+            rucksackItem.DragStarted += OnDragStarted;
         }
+    }
+
+    void OnDragStarted(int itemId, bool started)
+    {
+        DraggedItem = started ? rucksackItems[itemId] : null;
+    }
+
+    public void EquipDraggedItem()
+    {
+        var settings = applicationSettings.GetRucksackItemSettings(DraggedItem.SettingsId);
+
+        int slotIndex = 0;
+        for(int i = 0; i < dataModel.RucksackData.Length; i++)
+        {
+            if (dataModel.RucksackData[i].ItemType == settings.ItemType)
+            {
+                slotIndex = i;
+            }
+        }
+
+        var data = dataModel.RucksackData[slotIndex];
+
+        if (data.ItemId.Value != Constants.UnEquippedItemId)
+        {
+            var oldItem = rucksackItems[data.ItemId.Value];
+            oldItem.transform.SetParent(rucksackItemsParent.transform);
+            oldItem.transform.position = GetRandomPos();
+            oldItem.SetEquipped(false);
+        }
+
+        data.ItemId.Value = DraggedItem.InstanceId;
+        DraggedItem.SetEquipped(true);
     }
 }

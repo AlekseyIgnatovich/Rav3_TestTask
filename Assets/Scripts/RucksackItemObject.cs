@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RucksackItemObject : MonoBehaviour
 {
-    public event Action<bool> DragStarted = null;
+    public event Action<int, bool> DragStarted = null;
 
     public int InstanceId { get; private set; }
     public string SettingsId { get; private set; }
+
+    public bool IsEquipped { get; private set; }
 
     bool dragging = false;
 
@@ -17,16 +18,34 @@ public class RucksackItemObject : MonoBehaviour
         SettingsId = settingsId;
     }
 
+    public void SetEquipped(bool equipped)
+    {
+        IsEquipped = equipped;
+
+        var rigidbody = GetComponent<Rigidbody>();
+
+        if (equipped)
+        {
+            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            
+        }
+        else
+        {
+            rigidbody.constraints = RigidbodyConstraints.None;
+
+        }
+    }
+
     void OnMouseDown()
     {
         dragging = true;
-        DragStarted?.Invoke(dragging);
+        DragStarted?.Invoke(InstanceId, dragging);
     }
 
     void OnMouseUp()
     {
         dragging = false;
-        DragStarted?.Invoke(dragging);
+        DragStarted?.Invoke(InstanceId, dragging);
     }
 
     void Update()
