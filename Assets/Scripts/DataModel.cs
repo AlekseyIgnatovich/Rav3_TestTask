@@ -6,7 +6,7 @@ using static Constants;
 [CreateAssetMenu(fileName = "DataModel", menuName = "ScriptableObjects/DataModel", order = 2)]
 public class DataModel : ScriptableObject
 {
-    public event Action<RucksackItemType, int> RucksackEquipmentChanged;
+    public event Action<RucksackItemType, int, bool> RucksackEquipmentChanged;
 
     public RucksackSlotModel[] RucksackData { get { return rucksackData; } }
 
@@ -27,9 +27,7 @@ public class DataModel : ScriptableObject
 
     public void Init(bool clearModel = false)
     {
-        Debug.Log("Init model");
-
-        if(clearModel || rucksackData == null || rucksackData.Length != Enum.GetValues(typeof(RucksackItemType)).Length)
+        if (clearModel || rucksackData == null || rucksackData.Length != Enum.GetValues(typeof(RucksackItemType)).Length)
         {
             CreateModel();
         }
@@ -37,18 +35,25 @@ public class DataModel : ScriptableObject
 
     public void SetItem(RucksackItemType type, int instanceId)
     {
+        if (rucksackData[(int)type].ItemId != Constants.UnEquippedItemId)
+        {
+            RucksackEquipmentChanged?.Invoke(type, rucksackData[(int)type].ItemId, false);
+        }
+
         rucksackData[(int)type].ItemId = instanceId;
-        RucksackEquipmentChanged?.Invoke(type, instanceId);
+
+        if (rucksackData[(int)type].ItemId != Constants.UnEquippedItemId)
+        {
+            RucksackEquipmentChanged?.Invoke(type, rucksackData[(int)type].ItemId, true);
+        }
     }
 
     void CreateModel()
     {
-        Debug.Log("Create fresh model");
-
         RucksackItemType[] itemValues = (RucksackItemType[])Enum.GetValues(typeof(RucksackItemType));
         rucksackData = new RucksackSlotModel[itemValues.Length];
 
-        for (int i = 0; i < itemValues.Length; i ++)
+        for (int i = 0; i < itemValues.Length; i++)
         {
             rucksackData[i] = new RucksackSlotModel(itemValues[i], UnEquippedItemId);
         }

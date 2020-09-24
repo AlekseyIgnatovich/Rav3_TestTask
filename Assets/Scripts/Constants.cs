@@ -2,6 +2,7 @@
 
 public static class Constants
 {
+    // Todo: check invalid id in utils method
     public const int UnEquippedItemId = -1;
 
     public static class Layers
@@ -21,9 +22,4 @@ public enum RucksackItemType
     Sphere,
     Cube,
     Cylinder,
-}
-public enum EquipEventType
-{
-    Equipped,
-    UnEquipped
 }

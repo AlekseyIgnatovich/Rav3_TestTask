@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Rucksack : MonoBehaviour
 {
-    public event Action<bool> InventoryHovered = null;
     public event Action<bool> InventoryPressedEvent = null;
     public event Action DroppedIn = null;
 
@@ -12,14 +10,7 @@ public class Rucksack : MonoBehaviour
 
     [SerializeField] AnchorController anchorController = null;
 
-    RucksackItemsManager rucksackItemsManager = null;
-    bool mouseDown = false;
     bool howered = false;
-
-    public void Init(RucksackItemsManager rucksackItemsManager)
-    {
-        this.rucksackItemsManager = rucksackItemsManager;
-    }
 
     public void Equip(RucksackItemType type, GameObject item)
     {
@@ -33,7 +24,6 @@ public class Rucksack : MonoBehaviour
         {
             if (howered)
             {
-                Debug.Log("DroppedIn");
                 DroppedIn?.Invoke();
             }
 
@@ -41,7 +31,6 @@ public class Rucksack : MonoBehaviour
             {
                 InventoryPressed = false;
                 InventoryPressedEvent?.Invoke(InventoryPressed);
-                Debug.Log("InventoryPressedEvent " + InventoryPressed);
             }
         }
 
@@ -54,14 +43,11 @@ public class Rucksack : MonoBehaviour
             {
                 InventoryPressed = true;
                 InventoryPressedEvent?.Invoke(InventoryPressed);
-                Debug.Log("InventoryPressedEvent " + InventoryPressed);
             }
 
             if (!howered)
             {
                 howered = true;
-                Debug.Log("InventoryHovered " + howered);
-                InventoryHovered?.Invoke(howered);
             }
 
             return;
@@ -70,8 +56,6 @@ public class Rucksack : MonoBehaviour
         if (howered)
         {
             howered = false;
-            Debug.Log("InventoryHovered " + howered);
-            InventoryHovered?.Invoke(howered);
         }
     }
 }

@@ -2,8 +2,6 @@
 using UnityEngine.Networking;
 using UnityEngine;
 
-using static Constants;
-
 public class NetworkManager : MonoBehaviour
 {
     //Todo: to constants file
@@ -15,42 +13,28 @@ public class NetworkManager : MonoBehaviour
     const string itemIdParam = "itemId";
     const string itemEventParam = "eventType";
 
-    public void SendEquipEvent(EquipEventType eventType, int itemId)
+    // ToDo: verify message sending sequence
+    public void SendEquipEvent(int itemId, bool equipped)
     {
-        StartCoroutine(Post(eventType, itemId));
+        StartCoroutine(Send(itemId, equipped));
     }
 
-    IEnumerator Post(EquipEventType eventType, int itemId)
+    IEnumerator Send(int itemId, bool equipped)
     {
         WWWForm form = new WWWForm();
         form.AddField(itemIdParam, itemId.ToString());
-        form.AddField(itemEventParam, eventType.ToString());
+        form.AddField(itemEventParam, equipped.ToString());
 
-        UnityWebRequest www = UnityWebRequest.Post(serverURL, form);
-        www.SetRequestHeader(authParam, authKey);
+        UnityWebRequest Request = UnityWebRequest.Post(serverURL, form);
+        Request.SetRequestHeader(authParam, authKey);
 
-        Debug.LogError("Post: " + eventType + " " + itemId);
+        yield return Request.SendWebRequest();
 
-        yield return www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
+        if (Request.isNetworkError || Request.isHttpError)
         {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            Debug.Log("Form upload complete!");
+            Debug.Log(Request.error);
         }
 
-        Debug.Log(www.downloadHandler.text);
-        Debug.Log(www.downloadHandler.data.Length);
-
-        string resultUTF8 = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-        string resultASCII = System.Text.Encoding.ASCII.GetString(www.downloadHandler.data);
-
-        Debug.Log("resultUTF8 " + resultUTF8);
-        Debug.Log("resultASCII " + resultASCII);
-
-        www.Dispose();
+        Request.Dispose();
     }
 }

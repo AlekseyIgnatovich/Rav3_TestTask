@@ -5,7 +5,7 @@ public class RucksackMenu : MonoBehaviour
 {
     public event Action<int> ItemSelected;
 
-    [SerializeField] RucksackMenuItem[] menuItems;
+    [SerializeField] RucksackMenuItem[] menuItems = null;
 
     public void SetItemIcon(int index, int itemId, Sprite sprite)
     {

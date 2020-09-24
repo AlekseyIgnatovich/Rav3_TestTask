@@ -18,8 +18,6 @@ public class RucksackItemObject : MonoBehaviour
 
     public void SetEquipped(bool equipped)
     {
-        Debug.LogError("RucksackItemObject equipped " + equipped);
-
         IsEquipped = equipped;
         Dragging = false;
         var rigidbody = GetComponent<Rigidbody>();
@@ -27,12 +25,10 @@ public class RucksackItemObject : MonoBehaviour
         if (equipped)
         {
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-            
         }
         else
         {
             rigidbody.constraints = RigidbodyConstraints.None;
-
         }
     }
 

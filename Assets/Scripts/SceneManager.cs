@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class SceneManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class EquipEvent : UnityEvent<RucksackItemType, int, bool> { }
+
+    public EquipEvent RucksackItemEquipped;
+
     [SerializeField] ApplicationSettings applicationSettings = null;
     [SerializeField] Rucksack rucksack = null;
     [SerializeField] NetworkManager networkManager = null;
@@ -21,22 +24,27 @@ public class SceneManager : MonoBehaviour
         rucksackItemsManager.LoadItemsData();
         rucksackItemsManager.CreateItems();
 
-        rucksack.Init(rucksackItemsManager);
-        rucksack.InventoryHovered += OnRucksakHowered;
         rucksack.InventoryPressedEvent += OnInventoryPressedEvent;
         rucksack.DroppedIn += OnRucksackDroppedIn;
 
         hud.Init(applicationSettings, dataModel, rucksackItemsManager);
         hud.RucksackMenu.ItemSelected += OnRucksackMenuItemSelected;
+
+        dataModel.RucksackEquipmentChanged += OnRucksackEquipmentChanged;
+    }
+
+    void OnRucksackEquipmentChanged(RucksackItemType type,  int instanceId, bool equipped)
+    {
+        Debug.LogError("OnRucksackEquipmentChanged " + type + " id " + instanceId + " Equipped " + equipped);
+        networkManager.SendEquipEvent(instanceId, equipped);
+
+        RucksackItemEquipped.Invoke(type, instanceId, equipped);
     }
 
     void OnRucksackMenuItemSelected(int itemId)
     {
         if (itemId != Constants.UnEquippedItemId)
         {
-            var item = rucksackItemsManager.RucksackItems[itemId];
-            var settings = applicationSettings.GetRucksackItemSettings(item.SettingsId);
-
             rucksackItemsManager.UnEquip(itemId);
         }
     }
@@ -55,10 +63,5 @@ public class SceneManager : MonoBehaviour
 
             rucksackItemsManager.EquipDraggedItem();
         }
-    }
-
-    void OnRucksakHowered(bool pressed)
-    {
-
     }
 }

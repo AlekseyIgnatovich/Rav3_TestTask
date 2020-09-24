@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Hud : MonoBehaviour
 {
@@ -41,7 +40,7 @@ public class Hud : MonoBehaviour
         rucksackMenu.SetItemIcon((int)type, istanceId, icon);
     }
 
-    void OnRucksackEquipmentChanged(RucksackItemType type, int instanceId)
+    void OnRucksackEquipmentChanged(RucksackItemType type, int instanceId, bool equipped)
     {
         SetRucksackItem(type);
     }
