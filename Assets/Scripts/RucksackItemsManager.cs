@@ -21,6 +21,7 @@ public class RucksackItemsManager
     const int ItemsCountPerType = 3;
 
     public RucksackItemObject DraggedItem { get; private set; }
+    public Dictionary<int, RucksackItemObject> RucksackItems { get { return rucksackItems; } }
 
     ApplicationSettings applicationSettings = null;
     DataModel dataModel = null;
@@ -103,15 +104,21 @@ public class RucksackItemsManager
 
         var data = dataModel.RucksackData[slotIndex];
 
-        if (data.ItemId.Value != Constants.UnEquippedItemId)
+        if (data.ItemId != Constants.UnEquippedItemId)
         {
-            var oldItem = rucksackItems[data.ItemId.Value];
+            var oldItem = rucksackItems[data.ItemId];
             oldItem.transform.SetParent(rucksackItemsParent.transform);
             oldItem.transform.position = GetRandomPos();
             oldItem.SetEquipped(false);
         }
 
-        data.ItemId.Value = DraggedItem.InstanceId;
+        dataModel.SetItem(settings.ItemType, DraggedItem.InstanceId);
+        data.ItemId = DraggedItem.InstanceId;
         DraggedItem.SetEquipped(true);
+
+        DraggedItem.transform.localPosition = Vector3.zero;
+        DraggedItem.transform.localRotation = Quaternion.identity;
+
+        DraggedItem = null;
     }
 }

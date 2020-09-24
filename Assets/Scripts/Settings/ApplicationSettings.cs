@@ -18,14 +18,14 @@ public class ApplicationSettings : ScriptableObject
         [SerializeField] string name = string.Empty;
         [SerializeField] float weight = 1f;
         [SerializeField] GameObject prefab = null;
-        [SerializeField] Texture2D icon = null;
+        [SerializeField] Sprite icon = null;
 
         public string SettingsId { get { return settingsId; } }
         public RucksackItemType ItemType { get { return itemType; } }
         public string Name { get { return name; } }
         public float Weight { get { return weight; } }
         public GameObject Prefab { get { return prefab; } }
-        public Texture2D Icon { get { return icon; } }
+        public Sprite Icon { get { return icon; } }
     }
 
     public string GetRandomRucksackItem(RucksackItemType itemType)

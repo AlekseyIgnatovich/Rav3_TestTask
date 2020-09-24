@@ -16,13 +16,12 @@ public class DataModel : ScriptableObject
     public class RucksackSlotModel
     {
         public RucksackItemType ItemType;
-        public NotifableInt ItemId;
+        public int ItemId;
 
-        public RucksackSlotModel(RucksackItemType itemType, int itemId/*, bool equipped*/)
+        public RucksackSlotModel(RucksackItemType itemType, int itemId)
         {
             ItemType = itemType;
-            ItemId = new NotifableInt();
-            ItemId.Value = itemId;
+            ItemId = itemId;
         }
     }
 
@@ -36,6 +35,12 @@ public class DataModel : ScriptableObject
         }
     }
 
+    public void SetItem(RucksackItemType type, int instanceId)
+    {
+        rucksackData[(int)type].ItemId = instanceId;
+        RucksackEquipmentChanged?.Invoke(type, instanceId);
+    }
+
     void CreateModel()
     {
         Debug.Log("Create fresh model");
@@ -46,12 +51,6 @@ public class DataModel : ScriptableObject
         for (int i = 0; i < itemValues.Length; i ++)
         {
             rucksackData[i] = new RucksackSlotModel(itemValues[i], UnEquippedItemId);
-            rucksackData[i].ItemId.Changed += OnSlotChanged;
         }
-    }
-
-    void OnSlotChanged(int index)
-    {
-        RucksackEquipmentChanged?.Invoke(rucksackData[index].ItemType, rucksackData[index].ItemId.Value);
     }
 }

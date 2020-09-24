@@ -20,8 +20,10 @@ public class RucksackItemObject : MonoBehaviour
 
     public void SetEquipped(bool equipped)
     {
-        IsEquipped = equipped;
+        Debug.LogError("RucksackItemObject equipped " + equipped);
 
+        IsEquipped = equipped;
+        dragging = false;
         var rigidbody = GetComponent<Rigidbody>();
 
         if (equipped)
@@ -38,8 +40,11 @@ public class RucksackItemObject : MonoBehaviour
 
     void OnMouseDown()
     {
-        dragging = true;
-        DragStarted?.Invoke(InstanceId, dragging);
+        if (!IsEquipped)
+        {
+            dragging = true;
+            DragStarted?.Invoke(InstanceId, dragging);
+        }
     }
 
     void OnMouseUp()
