@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Hud : MonoBehaviour
 {
+    public RucksackMenu RucksackMenu { get { return rucksackMenu; } }
+
     [SerializeField] RucksackMenu rucksackMenu = null;
 
     ApplicationSettings applicationSettings = null;
@@ -15,7 +17,7 @@ public class Hud : MonoBehaviour
         this.dataModel = dataModel;
         this.rucksackItemsManager = rucksackItemsManager;
 
-        for (int i = 0; i < dataModel.RucksackData.Length; i ++)
+        for (int i = 0; i < dataModel.RucksackData.Length; i++)
         {
             SetRucksackItem(dataModel.RucksackData[i].ItemType);
         }
@@ -44,8 +46,15 @@ public class Hud : MonoBehaviour
         SetRucksackItem(type);
     }
 
-    public void ShowRucksackMenu(bool howered)
+    public void ShowRucksackMenu(bool show)
     {
-        rucksackMenu.gameObject.SetActive(howered);
+        if (show)
+        {
+            rucksackMenu.Show();
+        }
+        else
+        {
+            rucksackMenu.Hide();
+        }
     }
 }

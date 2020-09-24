@@ -7,10 +7,8 @@ public class RucksackItemObject : MonoBehaviour
 
     public int InstanceId { get; private set; }
     public string SettingsId { get; private set; }
-
     public bool IsEquipped { get; private set; }
-
-    bool dragging = false;
+    public bool Dragging  { get; private set; }
 
     public void Init(int instanceId, string settingsId)
     {
@@ -23,7 +21,7 @@ public class RucksackItemObject : MonoBehaviour
         Debug.LogError("RucksackItemObject equipped " + equipped);
 
         IsEquipped = equipped;
-        dragging = false;
+        Dragging = false;
         var rigidbody = GetComponent<Rigidbody>();
 
         if (equipped)
@@ -42,20 +40,20 @@ public class RucksackItemObject : MonoBehaviour
     {
         if (!IsEquipped)
         {
-            dragging = true;
-            DragStarted?.Invoke(InstanceId, dragging);
+            Dragging = true;
+            DragStarted?.Invoke(InstanceId, Dragging);
         }
     }
 
     void OnMouseUp()
     {
-        dragging = false;
-        DragStarted?.Invoke(InstanceId, dragging);
+        Dragging = false;
+        DragStarted?.Invoke(InstanceId, Dragging);
     }
 
     void Update()
     {
-        if (dragging)
+        if (Dragging)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

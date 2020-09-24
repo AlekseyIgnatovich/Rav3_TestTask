@@ -23,12 +23,30 @@ public class SceneManager : MonoBehaviour
 
         rucksack.Init(rucksackItemsManager);
         rucksack.InventoryHovered += OnRucksakHowered;
+        rucksack.InventoryPressedEvent += OnInventoryPressedEvent;
         rucksack.DroppedIn += OnRucksackDroppedIn;
 
         hud.Init(applicationSettings, dataModel, rucksackItemsManager);
+        hud.RucksackMenu.ItemSelected += OnRucksackMenuItemSelected;
     }
 
-    private void OnRucksackDroppedIn()
+    void OnRucksackMenuItemSelected(int itemId)
+    {
+        if (itemId != Constants.UnEquippedItemId)
+        {
+            var item = rucksackItemsManager.RucksackItems[itemId];
+            var settings = applicationSettings.GetRucksackItemSettings(item.SettingsId);
+
+            rucksackItemsManager.UnEquip(itemId);
+        }
+    }
+
+    void OnInventoryPressedEvent(bool pressed)
+    {
+        hud.ShowRucksackMenu(pressed && !rucksackItemsManager.IsDraggedObject);
+    }
+
+    void OnRucksackDroppedIn()
     {
         if (rucksackItemsManager.DraggedItem != null)
         {
@@ -39,21 +57,8 @@ public class SceneManager : MonoBehaviour
         }
     }
 
-    private void OnRucksakHowered(bool howered)
+    void OnRucksakHowered(bool pressed)
     {
-        if (howered && rucksackItemsManager.DraggedItem != null)
-        {
-            var settings = applicationSettings.GetRucksackItemSettings(rucksackItemsManager.DraggedItem.SettingsId);
 
-            rucksack.Equip(settings.ItemType, rucksackItemsManager.DraggedItem.gameObject);
-            rucksackItemsManager.EquipDraggedItem();
-
-            return;
-        }
-
-        if (rucksackItemsManager.DraggedItem == null)
-        {
-            hud.ShowRucksackMenu(howered);
-        }
     }
 }

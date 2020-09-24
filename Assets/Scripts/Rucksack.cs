@@ -5,7 +5,10 @@ using UnityEngine;
 public class Rucksack : MonoBehaviour
 {
     public event Action<bool> InventoryHovered = null;
+    public event Action<bool> InventoryPressedEvent = null;
     public event Action DroppedIn = null;
+
+    public bool InventoryPressed { get; private set; }
 
     [SerializeField] AnchorController anchorController = null;
 
@@ -26,45 +29,49 @@ public class Rucksack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            mouseDown = true;
-        }
-
         if (Input.GetMouseButtonUp(0))
         {
-            mouseDown = false;
-
-            if(howered)
+            if (howered)
             {
-                Debug.LogError("DroppedIn");
+                Debug.Log("DroppedIn");
                 DroppedIn?.Invoke();
+            }
+
+            if (InventoryPressed)
+            {
+                InventoryPressed = false;
+                InventoryPressedEvent?.Invoke(InventoryPressed);
+                Debug.Log("InventoryPressedEvent " + InventoryPressed);
             }
         }
 
-        if (mouseDown)
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, float.MaxValue, Constants.Layers.RucksackdMask))
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, float.MaxValue, Constants.Layers.RucksackdMask))
+            if (Input.GetMouseButtonDown(0))
             {
-                if(!howered)
-                {
-                    howered = true;
-                    Debug.LogError("InventoryHovered " + howered);
-                    InventoryHovered?.Invoke(howered);
-                }
-
-                return;
+                InventoryPressed = true;
+                InventoryPressedEvent?.Invoke(InventoryPressed);
+                Debug.Log("InventoryPressedEvent " + InventoryPressed);
             }
 
-            if (howered)
+            if (!howered)
             {
-                howered = false;
-                Debug.LogError("InventoryHovered " + howered);
+                howered = true;
+                Debug.Log("InventoryHovered " + howered);
                 InventoryHovered?.Invoke(howered);
             }
+
+            return;
+        }
+
+        if (howered)
+        {
+            howered = false;
+            Debug.Log("InventoryHovered " + howered);
+            InventoryHovered?.Invoke(howered);
         }
     }
 }

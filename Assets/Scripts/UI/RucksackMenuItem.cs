@@ -1,33 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RucksackMenuItem : MonoBehaviour
+public class RucksackMenuItem : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
 {
-    int itemId = Constants.UnEquippedItemId;
+    public bool Pressed { get; private set; }
+    public int ItemId { get; private set; }
+
+    void Awake()
+    {
+        ItemId = Constants.UnEquippedItemId;
+    }
 
     public void SetItem(int itemId, Sprite sprite)
     {
-        this.itemId = itemId;
+        this.ItemId = itemId;
 
         var image = GetComponent<Image>();
         image.sprite = sprite;
     }
 
-    public void Reset()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        itemId = Constants.UnEquippedItemId;
-
-        var image = GetComponent<Image>();
-        image.sprite = null;
+        Pressed = false;
     }
 
-    void OnMouseUp()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.LogError("RucksackMenuItem OnMouseUp");
+        Pressed = true;
+    }
 
-        //dragging = false;
-        //DragStarted?.Invoke(InstanceId, dragging);
+    void OnDisable()
+    {
+        Pressed = false;
     }
 }

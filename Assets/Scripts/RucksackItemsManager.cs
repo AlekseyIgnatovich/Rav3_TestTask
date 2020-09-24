@@ -21,6 +21,7 @@ public class RucksackItemsManager
     const int ItemsCountPerType = 3;
 
     public RucksackItemObject DraggedItem { get; private set; }
+    public bool IsDraggedObject { get { return DraggedItem != null && DraggedItem.Dragging; } }
     public Dictionary<int, RucksackItemObject> RucksackItems { get { return rucksackItems; } }
 
     ApplicationSettings applicationSettings = null;
@@ -86,7 +87,7 @@ public class RucksackItemsManager
 
     void OnDragStarted(int itemId, bool started)
     {
-        DraggedItem = started ? rucksackItems[itemId] : null;
+        DraggedItem = started ? rucksackItems[itemId] : DraggedItem;
     }
 
     public void EquipDraggedItem()
@@ -103,13 +104,9 @@ public class RucksackItemsManager
         }
 
         var data = dataModel.RucksackData[slotIndex];
-
         if (data.ItemId != Constants.UnEquippedItemId)
         {
-            var oldItem = rucksackItems[data.ItemId];
-            oldItem.transform.SetParent(rucksackItemsParent.transform);
-            oldItem.transform.position = GetRandomPos();
-            oldItem.SetEquipped(false);
+            UnEquip(data.ItemId);
         }
 
         dataModel.SetItem(settings.ItemType, DraggedItem.InstanceId);
@@ -120,5 +117,17 @@ public class RucksackItemsManager
         DraggedItem.transform.localRotation = Quaternion.identity;
 
         DraggedItem = null;
+    }
+
+    public void UnEquip(int itemId)
+    {
+        var item = rucksackItems[itemId];
+        var settings = applicationSettings.GetRucksackItemSettings(item.SettingsId);
+
+        item.transform.SetParent(rucksackItemsParent.transform);
+        item.transform.position = GetRandomPos();
+        item.SetEquipped(false);
+
+        dataModel.SetItem(settings.ItemType, Constants.UnEquippedItemId);
     }
 }
