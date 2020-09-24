@@ -34,7 +34,7 @@ public class Hud : MonoBehaviour
             icon = settings.Icon;
         }
 
-        rucksackMenu.SetItemIcon((int)type, istanceId, icon);
+        rucksackMenu.SetItemIcon((int)type, equipped ? istanceId : Constants.UnEquippedItemId, icon);
     }
 
     void OnRucksackEquipmentChanged(RucksackItemType type, int instanceId, bool equipped)

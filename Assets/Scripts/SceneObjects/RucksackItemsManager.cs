@@ -45,7 +45,7 @@ public class RucksackItemsManager
         RucksackItemType[] itemTypes = (RucksackItemType[])Enum.GetValues(typeof(RucksackItemType));
 
         itemsData = new ItemsCreationData[itemTypes.Length * ItemsCountPerType];
-        for (int i = 0; i < itemTypes.Length; i++ )
+        for (int i = 0; i < itemTypes.Length; i++)
         {
             for (int j = 0; j < ItemsCountPerType; j++)
             {
@@ -61,7 +61,7 @@ public class RucksackItemsManager
         float x = UnityEngine.Random.Range(-5, 5);
         float y = 1;
         float z = UnityEngine.Random.Range(-5, 5);
-        return  new Vector3(x, y, z);
+        return new Vector3(x, y, z);
     }
 
     public void CreateItems()
@@ -69,13 +69,13 @@ public class RucksackItemsManager
         foreach (var d in itemsData)
         {
             var settings = applicationSettings.GetRucksackItemSettings(d.SettingsId);
-            if(settings == null)
+            if (settings == null)
             {
                 Debug.LogError("item settings is null");
                 continue;
             }
 
-            var itemObject  = GameObject.Instantiate(settings.Prefab, d.Position , Quaternion.identity, rucksackItemsParent.transform);
+            var itemObject = GameObject.Instantiate(settings.Prefab, d.Position, Quaternion.identity, rucksackItemsParent.transform);
             var rucksackItem = itemObject.GetComponent<RucksackItemObject>();
 
             rucksackItem.Init(d.InstanceId, d.SettingsId);
@@ -95,7 +95,7 @@ public class RucksackItemsManager
         var settings = applicationSettings.GetRucksackItemSettings(DraggedItem.SettingsId);
 
         int slotIndex = 0;
-        for(int i = 0; i < dataModel.RucksackData.Length; i++)
+        for (int i = 0; i < dataModel.RucksackData.Length; i++)
         {
             if (dataModel.RucksackData[i].ItemType == settings.ItemType)
             {
@@ -121,6 +121,11 @@ public class RucksackItemsManager
 
     public void UnEquip(int itemId)
     {
+        if (itemId == Constants.UnEquippedItemId)
+        {
+            return;
+        }
+
         var item = rucksackItems[itemId];
         var settings = applicationSettings.GetRucksackItemSettings(item.SettingsId);
 
