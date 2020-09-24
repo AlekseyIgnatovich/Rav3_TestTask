@@ -7,30 +7,27 @@ public class Hud : MonoBehaviour
     [SerializeField] RucksackMenu rucksackMenu = null;
 
     ApplicationSettings applicationSettings = null;
-    DataModel dataModel = null;
     RucksackItemsManager rucksackItemsManager = null;
 
     public void Init(ApplicationSettings applicationSettings, DataModel dataModel, RucksackItemsManager rucksackItemsManager)
     {
         this.applicationSettings = applicationSettings;
-        this.dataModel = dataModel;
         this.rucksackItemsManager = rucksackItemsManager;
 
         for (int i = 0; i < dataModel.RucksackData.Length; i++)
         {
-            SetRucksackItem(dataModel.RucksackData[i].ItemType);
+            SetRucksackItem(dataModel.RucksackData[i].ItemType, Constants.UnEquippedItemId, false);
         }
 
         dataModel.RucksackEquipmentChanged += OnRucksackEquipmentChanged;
         rucksackMenu.gameObject.SetActive(false);
     }
 
-    void SetRucksackItem(RucksackItemType type)
+    void SetRucksackItem(RucksackItemType type, int istanceId, bool equipped)
     {
-        int istanceId = dataModel.RucksackData[(int)type].ItemId;
         Sprite icon = null;
 
-        if (istanceId != Constants.UnEquippedItemId)
+        if (equipped && istanceId != Constants.UnEquippedItemId)
         {
             var item = rucksackItemsManager.RucksackItems[istanceId];
             var settings = applicationSettings.GetRucksackItemSettings(item.SettingsId);
@@ -42,7 +39,7 @@ public class Hud : MonoBehaviour
 
     void OnRucksackEquipmentChanged(RucksackItemType type, int instanceId, bool equipped)
     {
-        SetRucksackItem(type);
+        SetRucksackItem(type, instanceId, equipped);
     }
 
     public void ShowRucksackMenu(bool show)

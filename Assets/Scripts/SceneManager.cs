@@ -35,7 +35,6 @@ public class SceneManager : MonoBehaviour
 
     void OnRucksackEquipmentChanged(RucksackItemType type,  int instanceId, bool equipped)
     {
-        Debug.LogError("OnRucksackEquipmentChanged " + type + " id " + instanceId + " Equipped " + equipped);
         networkManager.SendEquipEvent(instanceId, equipped);
 
         RucksackItemEquipped.Invoke(type, instanceId, equipped);
